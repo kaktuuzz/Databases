@@ -1,0 +1,71 @@
+Q: List at least 6 different superkeys for Relation A (Employee)?
+A: 1. {EmpID}, 2. {SSN}, 3. {Email}, 4. {EmpID, Name}, 5. {SSN, Department}, 6. {Email, Salary}.
+
+Q: Identify all candidate keys for Relation A (Employee)?
+A: EmpID, SSN, and Email.
+
+Q: Which candidate key would you choose as primary key and why for Relation A?
+A: EmpID, because it avoids exposing sensitive personal data like SSN and does not change like an email address.
+
+Q: Can two employees have the same phone number based on the data shown for Relation A?
+A: The sample data shows distinct phone numbers, but in a real-world context, phone numbers can be shared unless restricted by a unique constraint.
+
+Q: Determine the minimum attributes needed for the primary key of Relation B (Course Registration).
+A: {Student ID, CourseCode, Section, Semester, Year}.
+
+Q: Explain why each attribute in your primary key for Relation B is necessary.
+A: Student ID identifies the student, CourseCode identifies the course, Section distinguishes course sections in a semester, and Semester and Year allow students to take the same course across different terms.
+
+Q: Identify any additional candidate keys for Relation B.
+A: There are no other natural candidate keys without introducing a surrogate registration identifier.
+
+Q: Identify all foreign key relationships for the given university system tables in Task 1.2.
+A: Student.Major references Department.DeptCode, Student.AdvisorID references Professor.ProfID, Professor.Department references Department.DeptCode, Course.DepartmentCode references Department.DeptCode, Department.ChairID references Professor.ProfID, Enrollment.Student ID references Student.StudentID, and Enrollment.CourseID references Course.CourseID.
+
+Q: Identify all entities for the Hospital Management System (Task 2.1), specifying which are strong and which are weak.
+A: Patient, Doctor, and Department are strong entities; Hospital Room is a weak entity.
+
+Q: Identify all attributes for each entity in the Hospital Management System and classify them.
+A: Patient has PatientID (simple PK), Name (composite), Birthdate (simple), Address (composite), Phone Numbers (multi-valued), and Insurance Information (composite). Doctor has DoctorID (simple PK), Name (composite), Specializations (multi-valued), Phone Numbers (multi-valued), and Office Location (simple). Department has DeptCode (simple PK), Name (simple), and Location (simple). Hospital Room has RoomNumber (simple partial key).
+
+Q: Identify all relationships with their cardinalities for the Hospital Management System.
+A: Department to Hospital Room is 1:N, Department to Doctor is 1:N, Patient to Doctor via Appointment is M:N, and Doctor to Patient via Prescription is M:N.
+
+Q: Create a complete ER diagram and identify a weak entity and a many-to-many relationship with attributes for the E-commerce Platform (Task 2.2).
+A: The E-commerce platform includes entities like Customer, Order, Product, Category, Vendor, OrderItem, Review, Inventory, and Address. OrderItem is a weak entity because it depends on Order. The M:N relationship between Order and Product is resolved via OrderItem, which requires attributes Quantity and PriceAtTimeOfOrder.
+
+Q: Identify all functional dependencies for the StudentProject table in Task 4.1.
+A: Student ID -> StudentName, StudentMajor; ProjectID -> ProjectTitle, ProjectType, Supervisor ID; Supervisor ID -> SupervisorName, SupervisorDept; {Student ID, ProjectID} -> Role, HoursWorked, StartDate, EndDate.
+
+Q: What redundancy and anomalies exist in the StudentProject table?
+A: Redundancy includes repeated student, project, and supervisor details. Update anomalies occur when updating supervisor details across multiple rows; insertion anomalies prevent adding projects without students; deletion anomalies cause loss of project and supervisor data when a student is deleted.
+
+Q: Apply 1NF to the StudentProject table.
+A: Assuming atomic values, the table satisfies 1NF.
+
+Q: What is the primary key and what are the partial dependencies for 2NF in Task 4.1?
+A: The primary key is {Student ID, ProjectID}. Partial dependencies are Student ID -> StudentName, StudentMajor and ProjectID -> ProjectTitle, ProjectType, Supervisor ID.
+
+Q: Show the 2NF decomposition for Task 4.1.
+A: 1. Student (Student ID, StudentName, StudentMajor); 2. Project (ProjectID, ProjectTitle, ProjectType, Supervisor ID, SupervisorName, SupervisorDept); 3. StudentProjectAssignment (Student ID, ProjectID, Role, HoursWorked, StartDate, EndDate).
+
+Q: Identify any transitive dependencies and show the final 3NF decomposition for Task 4.1.
+A: Transitive dependency exists in Project where ProjectID -> Supervisor ID and Supervisor ID -> SupervisorName, SupervisorDept. Final 3NF decomposition: 1. Student (Student ID, StudentName, StudentMajor); 2. Supervisor (Supervisor ID, SupervisorName, SupervisorDept); 3. Project (ProjectID, ProjectTitle, ProjectType, Supervisor ID); 4. StudentProjectAssignment (Student ID, ProjectID, Role, HoursWorked, StartDate, EndDate).
+
+Q: Determine the primary key and functional dependencies of the CourseSchedule table in Task 4.2.
+A: Primary key is {Student ID, CourseID}. Functional dependencies: Student ID -> StudentMajor, CourseID -> CourseName, InstructorID -> InstructorName, {TimeSlot, Room} -> Building.
+
+Q: Check if the CourseSchedule table is in BCNF and decompose it if not.
+A: It is not in BCNF because FDs like Student ID -> StudentMajor and CourseID -> CourseName have determinants that are not superkeys. BCNF decomposition: 1. Student (Student ID, StudentMajor); 2. Course (CourseID, CourseName); 3. Instructor (InstructorID, InstructorName); 4. RoomBuilding (TimeSlot, Room, Building); 5. EnrollmentSchedule (Student ID, CourseID, InstructorID, TimeSlot, Room).
+
+Q: Explain any potential loss of information in the BCNF decomposition for Task 4.2.
+A: There is no loss of information because all decomposition steps project onto common attributes that serve as candidate keys or superkeys, maintaining the lossless join property.
+
+Q: Outline the system requirements and normalized relational schema for the Real-World Application student clubs system (Task 5.1).
+A: Requirements track student clubs, memberships, events, attendance, officer positions, faculty advisors, room reservations, budget, and expenses. Relational schema includes Faculty, Club, Student, ClubMembership, OfficerPosition, Room, Event, Attendance, and Expense.
+
+Q: Explain a design decision where you had multiple valid options for Task 5.1.
+A: Handling club officer roles using a separate OfficerPosition associative table rather than boolean flags inside ClubMembership, which allows students to hold multiple roles across different terms without null values.
+
+Q: Write 3 example queries supported by the database for Task 5.1.
+A: 1. "Find all students who currently hold an officer position in the Computer Science Club, including their specific titles." 2. "List all upcoming events scheduled for next week along with their assigned room numbers and building locations." 3. "Calculate the total expenses incurred by each club for the current academic semester."
